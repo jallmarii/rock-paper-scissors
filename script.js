@@ -1,5 +1,5 @@
 // I changed this from console.log to having a gui with buttons to click, 
-// so some comments/unfction now will not make sense & I am not going to rewrite them :)
+// so some comments/functions will not make sense & I am not going to rewrite them :)
 
 // Utility function to standardize input
 function capitalize(input) {
@@ -69,7 +69,7 @@ function getWinner(computerChoice, playerChoice) {
   }        
 }
 
-// with my newfound knowledge, i will make a record list, score list and buttons to press
+// With my newfound knowledge, I will make a record list, score list and buttons to press
 // I will also make the game end after ten games because 5 is too few
 
 let totalGames = 0
@@ -77,7 +77,7 @@ let totalGames = 0
 // harness the ul as scoreList
 const scoreList = document.querySelector('ul');
 
-// function for my scoreList and updated the scoreboard, it would probably be best practice to break them into two functions
+// function for my scoreList and update the scoreboard, it would probably be best practice to break them into two functions
 function displayResult(result, computerChoice, playerChoice) {
   let message = '';
 
@@ -99,7 +99,7 @@ function displayResult(result, computerChoice, playerChoice) {
   document.querySelector('#divLosses').textContent = `Losses: ${losses}`
   document.querySelector('#divTies').textContent = `Ties: ${ties}`
 
-  // I forgot to run the function and wondered why it wasn't checking! :P It's a mess putting this all in one function
+  // I forgot to run the function and wondered why it wasn't checking! :P Checking now puts the alert before gui updates
   totalGames++;
   checkTotalGamesState();
 }
@@ -109,7 +109,7 @@ const rock = document.getElementById('Rock');
 const paper = document.getElementById('Paper');
 const scissors = document.getElementById('Scissors');
 
-// if clicked, run computerchoice(), put rock into playerChoice, run getwinner with this stuff, displayResult
+// if clicked, getComputerChoice and put rock into playerChoice, run getwinner with this stuff, displayResult
 rock.addEventListener('click', () => {
   const computerChoice = getComputerChoice();
   const playerChoice = 'Rock';
