@@ -1,8 +1,5 @@
-// Make computer value
-// Take player value
-// Define how values should be compared
-// Compare them
-// Display the results
+// I changed this from console.log to having a gui with buttons to click, 
+// so some comments/unfction now will not make sense & I am not going to rewrite them :)
 
 // Utility function to standardize input
 function capitalize(input) {
@@ -10,7 +7,7 @@ function capitalize(input) {
 };
 
 // Roughly 1/3 chance for any option and return it to store in computerChoice
-// Chatgpt showed a better way to do this but I don't understand it yet
+// Chatgpt showed a better way to do this but I'm not gonna blindly copy
 function getComputerChoice() {
   let num = Math.random() * 3
   let computerChoice;
@@ -32,7 +29,7 @@ function getPlayerChoice() {
     // so, prompt, then trim is applied, then that result is encapsulated by capitalize() so it works
     // chaining this way is slightly cooler and significantly less readable than just doing them line by line
 
-    // chatgpt says to include null, empty or undefined as edge case protection
+    // include null, empty or undefined as edge case protection + practice a while loop
   while ( 
     playerChoice === null || 
     playerChoice === '' ||    
@@ -47,54 +44,104 @@ function getPlayerChoice() {
 }
 
 // Global variables to track score
-// Chatgpt says to make an object but that concept is too complicated for my puny human brain to understand
-let win = 0;
-let tie = 0;
-let lose = 0;
+let wins = 0
+let ties = 0
+let losses = 0
 
 // This is more readable than a switch statement because there are multiple conditions & multiple variables
 function getWinner(computerChoice, playerChoice) {
   // easy part first
-  if (computerChoice === playerChoice) 
-  { 
-    alert(`It's a tie! You both chose ${computerChoice}.`);
-    return tie += 1; 
+  if (computerChoice === playerChoice) { 
+    ties++
+    return 'tie';
   } 
     else if (
     (playerChoice === 'Rock') && (computerChoice === 'Scissors') ||
     (playerChoice === 'Paper') && (computerChoice === 'Rock') ||
     (playerChoice === 'Scissors') && (computerChoice === 'Paper')
   ) {
-    alert(`You won! ${playerChoice} beats ${computerChoice}!`);
-    return win += 1;
-
+    wins++
+    return 'win';
     // if you dont tie or win, there's only one other option
-  } else {                                  
-    alert(`You lost! ${computerChoice} beats ${playerChoice} \:(`) //escaping the :( even if it doesn't matter right now)
-    return lose += 1;
-  }
+  } else {   
+    losses++
+    return 'lose';
+  }        
 }
 
-// Loop for 5 games total - do I capitalize this? I don't camelCase it I think
-const total_games = 5;
-for (let i = 1; i <= total_games; i++) {
+// with my newfound knowledge, i will make a record list, score list and buttons to press
+// I will also make the game end after ten games because 5 is too few
 
+let totalGames = 0
+
+// harness the ul as scoreList
+const scoreList = document.querySelector('ul');
+
+// function for my scoreList and updated the scoreboard, it would probably be best practice to break them into two functions
+function displayResult(result, computerChoice, playerChoice) {
+  let message = '';
+
+  if (result === 'tie') {
+    message = `Both chose ${playerChoice} - ......TIE!!!`;
+  } else if (result === 'win') {
+    message = `${playerChoice} beat ${computerChoice} - VICTORY!!!`;
+  } else if (result === 'lose') {
+    message = `${playerChoice} lost to ${computerChoice} - DEFEAT!!!`;
+  }
+
+  // create a list item in my scoreList with message and attach it to ul
+  const li = document.createElement('li');
+  li.textContent = message;
+  scoreList.appendChild(li)
+
+  // also update the scoreboard with numbers - easier than i thought it would be
+  document.querySelector('#divWins').textContent = `Wins: ${wins}`
+  document.querySelector('#divLosses').textContent = `Losses: ${losses}`
+  document.querySelector('#divTies').textContent = `Ties: ${ties}`
+
+  // I forgot to run the function and wondered why it wasn't checking! :P It's a mess putting this all in one function
+  totalGames++;
+  checkTotalGamesState();
+}
+
+// harness the power of buttons
+const rock = document.getElementById('Rock');
+const paper = document.getElementById('Paper');
+const scissors = document.getElementById('Scissors');
+
+// if clicked, run computerchoice(), put rock into playerChoice, run getwinner with this stuff, displayResult
+rock.addEventListener('click', () => {
   const computerChoice = getComputerChoice();
-  const playerChoice = getPlayerChoice();
+  const playerChoice = 'Rock';
+  const result = getWinner(computerChoice, playerChoice);
+  displayResult(result, computerChoice, playerChoice);
+});
 
-  if (playerChoice) {
-    console.log(`Game ${i}`);
-    getWinner(computerChoice, playerChoice);
-    console.log(`Your current record is ${win} wins, ${lose} losses, and ${tie} ties`);
-  } 
+paper.addEventListener('click', () => {
+  const computerChoice = getComputerChoice();
+  const playerChoice = 'Paper';
+  const result = getWinner(computerChoice, playerChoice);
+  displayResult(result, computerChoice, playerChoice);
+})
+
+scissors.addEventListener('click', () => {
+  const computerChoice = getComputerChoice();
+  const playerChoice = 'Scissors';
+  const result = getWinner(computerChoice, playerChoice);
+  displayResult(result, computerChoice, playerChoice);
+})
+
+// Put the totalgames logic after everything to make sure it catches the increment + it makes sense anyway
+function checkTotalGamesState() {
+  if (totalGames >= 10 && wins > losses) {
+    alert('After a hard battle, you have beaten Mr.Computer in a match of ROCK PAPER SCISSORS!!! Refresh to play again!');
+  } else if (totalGames >= 10 && losses > wins) {
+    alert('After a hard battle, you have LOST to MR. COMPUTER!! Oh no!!!! Refresh to try again!')
+  } else if (totalGames >= 10 && losses === wins) {
+    alert('The match ends in a DRAW!!! Who will win the next game??? Refresh to find out!');
+  }
 }
 
 // We define both variables/parameters: playerChoice, computerChoice
 // We determine their value/arguments: Rock, Paper or Scissors
 // We call whoWins() to explain the winner 
-// We put this call into a for-loop to play 5 games
-
-
-
-
-
